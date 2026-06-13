@@ -50,4 +50,41 @@ class CoursesController extends Controller
         // // Redirect to the courses index page with a success message
         // return redirect()->route('courses.index')->with('success', 'Course created successfully.');
     }
+
+    public function edit($id)
+    {
+        $data = Courses::find($id);
+        if (empty($data)) {
+            return redirect()->route('courses.index')->with('error', 'الكورس غير موجود');
+        }
+        return view('courses.edit', ['data' => $data]);
+    }
+
+    public function update(CreateCourseValidationRequest $request, $id)
+    {
+        $dataCourse = Courses::find($id);
+        if (empty($dataCourse)) {
+            return redirect()->route('courses.index')->with('error', 'الكورس غير موجود');
+        }
+        // لما يكون مسجل مادة ما بينفع نضيف غيرها
+        $counter = Courses::where('name', '=', $request->name)->where('id', '!=', $id)->count();
+        if ($counter > 0) {
+            return redirect()->back()->with(['error' => 'اسم الكورس موجود بالفعل'])->withInput();
+        }
+        $dataCourse->name = $request->name;
+        $dataCourse->active = $request->active;
+        $dataCourse->save();
+        return redirect()->route('courses.index')->with('success', 'تم تعديل الكورس بنجاح.');
+    }
+
+        public function destroy($id)
+    {
+        $dataCourse = Courses::find($id);
+        if (empty($dataCourse)) {
+            return redirect()->route('courses.index')->with('error', 'الكورس غير موجود');
+        }
+        $dataCourse->delete();
+        return redirect()->route('courses.index')->with('success', 'تم حذف الكورس بنجاح.');
+    }
+
 }
