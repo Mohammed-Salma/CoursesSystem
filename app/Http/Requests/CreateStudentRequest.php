@@ -27,7 +27,7 @@ class CreateStudentRequest extends FormRequest
             'active'=>'required',
             'country_id'=>'required',
             'phone'=>'required',
-            'nationalID'=>'required|unique:students,nationalID',
+            'nationalID' => 'required|unique:students,nationalID,' . $this->route('id'),
         ];
     }
     public function messages(): array

@@ -41,7 +41,7 @@ class StudentController extends Controller
         $student->note = $request->note;
         $student->active = $request->active;
         // Upload the image if it exists
-        if ($request->has('photo')) {
+        if ($request->hasFile('photo')) {
             $image = $request->photo;
             $extension = strtolower($image->extension());
             $filename = time() . rand(1, 1000) . '.' . $extension;
@@ -51,5 +51,51 @@ class StudentController extends Controller
         }
         $student->save();
         return redirect()->route('student.index')->with('success', 'تم إضافة الطالب بنجاح.');
+    }
+
+    public function edit($id)
+    {
+        $data = Students::find($id);
+        if (empty($data)) {
+            return redirect()->route('student.index')->with('error', 'الكورس غير موجود');
+        }
+        $countries = Countries::select("id", "name")->where('active', 1)->get();
+        return view('students.edit', ['data' => $data, 'countries' => $countries]);
+    }
+
+    public function update(CreateStudentRequest $request, $id)
+    {
+        $dataStudent = Students::find($id);
+        if (empty($dataStudent)) {
+            return redirect()->route('student.index')->with('error', 'الطالب غير موجود');
+        }
+        $dataStudent->name = $request->name;
+        $dataStudent->country_id = $request->country_id;
+        $dataStudent->phone = $request->phone;
+        $dataStudent->nationalID = $request->nationalID;
+        $dataStudent->address = $request->address;
+        $dataStudent->note = $request->note;
+        $dataStudent->active = $request->active;
+        // Upload the image if it exists
+        if ($request->hasFile('photo')) {
+            $image = $request->photo;
+            $extension = strtolower($image->extension());
+            $filename = time() . rand(1, 1000) . '.' . $extension;
+            // $image->getClientOriginalName = $filename;
+            $image->move(public_path('uploads'), $filename);
+            $dataStudent->image = $filename;
+        }
+        $dataStudent->save();
+        return redirect()->route('student.index')->with('success', 'تم تعديل الطالب بنجاح.');
+    }
+
+            public function destroy($id)
+    {
+        $dataStudent = Students::find($id);
+        if (empty($dataStudent)) {
+            return redirect()->route('student.index')->with('error', 'الطالب غير موجود');
+        }
+        $dataStudent->delete();
+        return redirect()->route('student.index')->with('success', 'تم حذف الطالب بنجاح.');
     }
 }

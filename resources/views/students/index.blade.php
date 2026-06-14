@@ -62,9 +62,9 @@
                                     <td>{{ $info->created_at }}</td>
                                     <td>{{ $info->updated_at }}</td>
                                     <td>
-                                        <a href="{{ route('courses.edit', $info->id) }}" class="button"
+                                        <a href="{{ route('student.edit', $info->id) }}" class="button"
                                             style="background-color: #04AA6D; color: white; padding: 5px">تعديل</a>
-                                        <a href="{{ route('courses.destroy', $info->id) }}" class="button"
+                                        <a href="{{ route('student.destroy', $info->id) }}" class="button"
                                             style="background-color: #aa0704; color: white; padding: 5px">حذف</a>
                                     </td>
                                 </tr>
