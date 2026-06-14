@@ -49,7 +49,7 @@
                                     <td>{{ $info->country_name }}</td>
                                     <td>{{ $info->address }}</td>
                                     <td>{{ $info->phone }}</td>
-                                    <td><img style="width: 70px; height: 70px;" src="{{ asset('uploads/mohamed.png') }}">
+                                    <td><img style="width: 70px; height: 70px;" src="{{ asset('uploads/' . $info->image) }}">
                                     </td>
                                     <td>{{ $info->note }}</td>
                                     <td>
