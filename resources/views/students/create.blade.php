@@ -77,6 +77,12 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+
+                <div class="form-group">
+                    <label for="photo">صورة الطالب</label>
+                    <input type="file" name="photo" class="form-control" id="photo">
+                </div>
+
             </div>
             <div class="form-group" style="text-align: center;">
                 <button type="submit" class="btn btn-primary" style="margin-bottom: 15px">أضف الطالب</button>

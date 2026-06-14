@@ -40,6 +40,15 @@ class StudentController extends Controller
         $student->address = $request->address;
         $student->note = $request->note;
         $student->active = $request->active;
+        // Upload the image if it exists
+        if ($request->has('photo')) {
+            $image = $request->photo;
+            $extension = strtolower($image->extension());
+            $filename = time() . rand(1, 1000) . '.' . $extension;
+            // $image->getClientOriginalName = $filename;
+            $image->move(public_path('uploads'), $filename);
+            $student->image = $filename;
+        }
         $student->save();
         return redirect()->route('student.index')->with('success', 'تم إضافة الطالب بنجاح.');
     }
