@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -28,3 +29,11 @@ Route::post('store_courses', [CoursesController::class, 'store'])->name('courses
 Route::get('edit_courses/{id}', [CoursesController::class, 'edit'])->name('courses.edit');
 Route::post('update_courses/{id}', [CoursesController::class, 'update'])->name('courses.update');
 Route::get('destroy_courses/{id}', [CoursesController::class, 'destroy'])->name('courses.destroy');
+
+// Students Route
+Route::get('student', [StudentController::class, 'index'])->name('student.index');
+Route::get('create_student', [StudentController::class, 'create'])->name('student.create');
+Route::post('store_student', [StudentController::class, 'store'])->name('student.store');
+Route::get('edit_student/{id}', [StudentController::class, 'edit'])->name('student.edit');
+Route::post('update_student/{id}', [StudentController::class, 'update'])->name('student.update');
+Route::get('destroy_student/{id}', [StudentController::class, 'destroy'])->name('student.destroy');
