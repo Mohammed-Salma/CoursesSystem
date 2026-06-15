@@ -29,7 +29,6 @@ class Training_coursesController extends Controller
 
     public function store(CreateTrainingCoursesRequest $request)
     {
-
         $course = new Training_courses();
         $course->courseID = $request->courseID;
         $course->start_date = $request->start_date;
@@ -38,5 +37,40 @@ class Training_coursesController extends Controller
         $course->note = $request->note;
         $course->save();
         return redirect()->route('training_courses.index')->with('success', 'تم إضافة الدورة بنجاح.');
+    }
+
+    public function edit($id)
+    {
+        $data = Training_courses::find($id);
+        if (empty($data)) {
+            return redirect()->route('training_courses.index')->with('error', 'الدورة غير موجودة');
+        }
+        $courses = Courses::select("id", "name")->where('active', 1)->get();
+        return view('training_courses.edit', ['data' => $data, 'courses' => $courses]);
+    }
+
+    public function update(CreateTrainingCoursesRequest $request, $id)
+    {
+        $dataCourse = Training_courses::find($id);
+        if (empty($dataCourse)) {
+            return redirect()->route('training_courses.index')->with('error', 'الدورة غير موجودة');
+        }
+        $dataCourse->courseID = $request->courseID;
+        $dataCourse->start_date = $request->start_date;
+        $dataCourse->end_date = $request->end_date;
+        $dataCourse->price = $request->price;
+        $dataCourse->note = $request->note;
+        $dataCourse->save();
+        return redirect()->route('training_courses.index')->with('success', 'تم تعديل الدورة بنجاح.');
+    }
+
+    public function destroy($id)
+    {
+        $dataCourse = Training_courses::find($id);
+        if (empty($dataCourse)) {
+            return redirect()->route('training_courses.index')->with('error', 'الدورة غير موجودة');
+        }
+        $dataCourse->delete();
+        return redirect()->route('training_courses.index')->with('success', 'تم حذف الدورة بنجاح.');
     }
 }
