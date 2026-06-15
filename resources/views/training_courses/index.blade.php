@@ -10,7 +10,7 @@
             <div class="card-header">
                 <h3 class="card-title" style="text-align: center; float: none;">بيانات الدورات التدريبية
                     <a href="{{ route('training_courses.create') }}" class="button"
-                        style="background-color: #04AA6D; color: white; padding: 10px; float: left;">إضافة طالب جديد</a>
+                        style="background-color: #04AA6D; color: white; padding: 10px; float: left;">إضافة دورة جديدة</a>
                 </h3>
 
                 @if (Session::has('success'))

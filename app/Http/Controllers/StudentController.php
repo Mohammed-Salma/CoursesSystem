@@ -27,6 +27,8 @@ class StudentController extends Controller
         $countries = Countries::select("id", "name")->where('active', 1)->get();
         return view('students.create', ['countries' => $countries]);
     }
+
+    
     public function store(CreateStudentRequest $request)
     {
         // لما يكون مسجل مادة ما بينفع نضيف غيرها

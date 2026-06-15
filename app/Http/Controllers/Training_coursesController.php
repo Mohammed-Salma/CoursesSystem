@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTrainingCoursesRequest;
 use App\Models\Courses;
 use Illuminate\Http\Request;
 use App\Models\Training_courses;
@@ -18,5 +19,24 @@ class Training_coursesController extends Controller
             }
         }
         return view('training_courses.index', ['data' => $data]); //تمرير البيانات الى صفحة العرض + ممكن بدل كوباكت احط ['data' => $data]
+    }
+
+    public function create()
+    {
+        $courses = Courses::select("id", "name")->where('active', 1)->get();
+        return view('training_courses.create', ['courses' => $courses]);
+    }
+
+    public function store(CreateTrainingCoursesRequest $request)
+    {
+
+        $course = new Training_courses();
+        $course->courseID = $request->courseID;
+        $course->start_date = $request->start_date;
+        $course->end_date = $request->end_date;
+        $course->price = $request->price;
+        $course->note = $request->note;
+        $course->save();
+        return redirect()->route('training_courses.index')->with('success', 'تم إضافة الدورة بنجاح.');
     }
 }
