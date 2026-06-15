@@ -20,6 +20,8 @@ class StudentController extends Controller
         }
         return view('students.index', ['data' => $data]); //تمرير البيانات الى صفحة العرض + ممكن بدل كوباكت احط ['data' => $data]
     }
+
+
     public function create()
     {
         $countries = Countries::select("id", "name")->where('active', 1)->get();
@@ -89,7 +91,7 @@ class StudentController extends Controller
         return redirect()->route('student.index')->with('success', 'تم تعديل الطالب بنجاح.');
     }
 
-            public function destroy($id)
+    public function destroy($id)
     {
         $dataStudent = Students::find($id);
         if (empty($dataStudent)) {
