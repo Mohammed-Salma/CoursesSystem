@@ -28,7 +28,7 @@ class StudentController extends Controller
         return view('students.create', ['countries' => $countries]);
     }
 
-    
+
     public function store(CreateStudentRequest $request)
     {
         // لما يكون مسجل مادة ما بينفع نضيف غيرها
@@ -101,5 +101,20 @@ class StudentController extends Controller
         }
         $dataStudent->delete();
         return redirect()->route('student.index')->with('success', 'تم حذف الطالب بنجاح.');
+    }
+
+    public function ajax_search_student(Request $request)
+    {
+        if ($request->ajax()) {
+            $name = $request->name;
+            $data = Students::where('name', 'LIKE', "%{$name}%")->get();
+            if (!empty($data)) {
+                foreach ($data as $info) {
+                    // بهاي الطريقة ممكن نجيب اسم الدولة بدل ما نعرض رقم الدولة يعني بنقدر نستخدمها اذا بدي اجيب عمود واحد من الجدول واعطيه القيمة الي بدي ياها يلي هي اسم العمود
+                    $info->country_name = Countries::where('id', '=', $info->country_id)->value('name');
+                }
+            }
+            return view('students.ajax_search_student', ['data' => $data]);
+        }
     }
 }
