@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateTrainingCoursesRequest;
+use App\Http\Requests\DoAddStudentToCourse;
 use App\Models\Courses;
+use App\Models\Students;
 use Illuminate\Http\Request;
 use App\Models\Training_courses;
+use App\Models\training_courses_enrolments;
 
 class Training_coursesController extends Controller
 {
@@ -72,5 +75,59 @@ class Training_coursesController extends Controller
         }
         $dataCourse->delete();
         return redirect()->route('training_courses.index')->with('success', 'تم حذف الدورة بنجاح.');
+    }
+
+    public function details($id)
+    {
+        $dataCourse = Training_courses::find($id);
+        if (empty($dataCourse)) {
+            return redirect()->route('training_courses.index')->with('error', 'الدورة غير موجودة');
+        }
+        $dataCourse['course_name'] = Courses::where('id', '=', $dataCourse['courseID'])->value('name');
+        $dataCourse['studentCounter'] = training_courses_enrolments::where('training_course_id', '=', $dataCourse['id'])->count();
+        $training_courses_enrolments = training_courses_enrolments::select('*')->where('training_course_id', '=', $dataCourse['id'])->get();
+        if (!empty($training_courses_enrolments)) {
+            foreach ($training_courses_enrolments as $info) {
+                $info->student_name = Students::where('id', '=', $info->studentID)->value('name');
+            }
+        }
+        return view('training_courses.details', ['data' => $dataCourse, 'training_courses_enrolments' => $training_courses_enrolments]);
+    }
+
+    public function AddStudentToTrainingCourses($id)
+    {
+        $dataCourse = Training_courses::find($id);
+        if (empty($dataCourse)) {
+            return redirect()->route('training_courses.index')->with('error', 'عذرا غير قادر على الوصول للبيانات المطلوبة');
+        }
+        $students = Students::select("id", "name")->where('active', 1)->get();
+        return view('training_courses.AddStudentToTrainingCourses', ['students' => $students, 'data' => $dataCourse]);
+    }
+
+    public function DoAddStudentToTrainingCourses($id, DoAddStudentToCourse $request)
+    {
+        $dataCourse = Training_courses::find($id);
+        if (empty($dataCourse)) {
+            return redirect()->route('training_courses.index')->with('error', 'عذرا غير قادر على الوصول للبيانات المطلوبة');
+        }
+        $studentCounter = training_courses_enrolments::where('training_course_id', '=', $dataCourse['id'])->where('studentID', '=', $request->studentID)->count();
+        if ($studentCounter > 0) {
+            return redirect()->route('training_courses.details', $id)->with('error', 'الطالب مسجل بالفعل في هذه الدورة');
+        }
+        $dataToInsert['training_course_id'] = $dataCourse['id'];
+        $dataToInsert['studentID'] = $request->studentID;
+        $dataToInsert['enrolment_date'] = $request->enrolment_date;
+        training_courses_enrolments::insert($dataToInsert);
+        return redirect()->route('training_courses.details', $id)->with('success', 'تم تسجيل الطالب في الدورة بنجاح.');
+    }
+
+    public function DeleteAddStudentFromTrainingCourses($id)
+    {
+        $data_training_courses_enrolments = training_courses_enrolments::find($id);
+        if (empty($data_training_courses_enrolments)) {
+            return redirect()->route('training_courses.index')->with('error', 'عذرا غير قادر على الوصول للبيانات المطلوبة');
+        }
+        $data_training_courses_enrolments->delete();
+        return redirect()->route('training_courses.details', $data_training_courses_enrolments->training_course_id)->with('success', 'تم حذف الطالب من الدورة بنجاح.');
     }
 }

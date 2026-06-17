@@ -56,6 +56,8 @@
                                             style="background-color: #04AA6D; color: white; padding: 5px">تعديل</a>
                                         <a href="{{ route('training_courses.destroy', $info->id) }}" class="button"
                                             style="background-color: #aa0704; color: white; padding: 5px">حذف</a>
+                                        <a href="{{ route('training_courses.details', $info->id) }}" class="button"
+                                            style="background-color: #b2be0c; color: white; padding: 5px;  ">الطلاب</a>
                                     </td>
                                 </tr>
                             @endforeach

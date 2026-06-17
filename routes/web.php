@@ -46,3 +46,7 @@ Route::post('store_training_courses', [Training_coursesController::class, 'store
 Route::get('edit_training_courses/{id}', [Training_coursesController::class, 'edit'])->name('training_courses.edit');
 Route::post('update_training_courses/{id}', [Training_coursesController::class, 'update'])->name('training_courses.update');
 Route::get('destroy_training_courses/{id}', [Training_coursesController::class, 'destroy'])->name('training_courses.destroy');
+Route::get('details_training_courses/{id}', [Training_coursesController::class, 'details'])->name('training_courses.details');
+Route::get('AddStudentToTrainingCourses/{id}', [Training_coursesController::class, 'AddStudentToTrainingCourses'])->name('training_courses.AddStudentToTrainingCourses');
+Route::post('DoAddStudentToTrainingCourses/{id}', [Training_coursesController::class, 'DoAddStudentToTrainingCourses'])->name('training_courses.DoAddStudentToTrainingCourses');
+Route::get('DeleteAddStudentFromTrainingCourses/{id}', [Training_coursesController::class, 'DeleteAddStudentFromTrainingCourses'])->name('training_courses.DeleteAddStudentFromTrainingCourses');
