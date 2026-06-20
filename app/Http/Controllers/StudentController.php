@@ -6,11 +6,19 @@ use App\Http\Requests\CreateStudentRequest;
 use App\Models\Countries;
 use App\Models\Students;
 use Illuminate\Http\Request;
+use App\Traits\GeneralTraits;
 
 class StudentController extends Controller
 {
+    use GeneralTraits;
     public function index()
     {
+        // هنا لما بدي استخدم دوال عليها طلب كثير وبستخدمها كثير عندي بالكود برضه بلجأ لطريقة التريت 
+        $this->mohamed();
+
+        // بهاي الطريقة بقدر استدعي اي دالة انا بسويها وبقدر استخدمها باي مكان بالكود عندي
+        // mohamed_soft();
+        session()->put('locale', 'ar');
         $data = Students::all();
         if (!empty($data)) {
             foreach ($data as $info) {
@@ -24,6 +32,7 @@ class StudentController extends Controller
 
     public function create()
     {
+        // mohamed_soft();
         $countries = Countries::select("id", "name")->where('active', 1)->get();
         return view('students.create', ['countries' => $countries]);
     }

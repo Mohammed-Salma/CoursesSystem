@@ -9,8 +9,10 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title" style="text-align: center; float: none;">بيانات الطلاب
+                    <a href="{{ route('ar') }}">ar</a>
+                    <a href="{{ route('en') }}">en</a>
                     <a href="{{ route('student.create') }}" class="button"
-                        style="background-color: #04AA6D; color: white; padding: 10px; float: left;">إضافة طالب جديد</a>
+                        style="background-color: #04AA6D; color: white; padding: 10px; float: left;">{{ __('mycustom.ADDNEW') }}</a>
                 </h3>
 
                 @if (Session::has('success'))

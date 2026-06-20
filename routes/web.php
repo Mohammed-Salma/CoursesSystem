@@ -51,3 +51,15 @@ Route::get('details_training_courses/{id}', [Training_coursesController::class, 
 Route::get('AddStudentToTrainingCourses/{id}', [Training_coursesController::class, 'AddStudentToTrainingCourses'])->name('training_courses.AddStudentToTrainingCourses');
 Route::post('DoAddStudentToTrainingCourses/{id}', [Training_coursesController::class, 'DoAddStudentToTrainingCourses'])->name('training_courses.DoAddStudentToTrainingCourses');
 Route::get('DeleteAddStudentFromTrainingCourses/{id}', [Training_coursesController::class, 'DeleteAddStudentFromTrainingCourses'])->name('training_courses.DeleteAddStudentFromTrainingCourses');
+
+
+
+Route::get('ar', function(){
+    session()->put('locale', 'ar');
+    return redirect()->back();
+})->name('ar');
+
+Route::get('en', function(){
+    session()->put('locale', 'en');
+    return redirect()->back();
+})->name('en');
