@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateStudentRequest;
 use App\Models\Countries;
 use App\Models\Students;
+use App\Models\User;
+use App\Notifications\CreateStudent;
 use Illuminate\Http\Request;
 use App\Traits\GeneralTraits;
+use Illuminate\Support\Facades\Notification;
 
 class StudentController extends Controller
 {
@@ -63,6 +66,13 @@ class StudentController extends Controller
             $student->image = $filename;
         }
         $student->save();
+
+        // ارسال اشعار لكل المستخدمسن في النظام
+        $users = User::select('id')->get();
+        $content = "تم اضافة طالب جديد باسم " . $request->name;
+        Notification::send($users, new CreateStudent($request->name, $content));
+
+
         return redirect()->route('student.index')->with('success', 'تم إضافة الطالب بنجاح.');
     }
 
