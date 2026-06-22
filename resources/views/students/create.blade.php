@@ -23,6 +23,7 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+
                 <div class="form-group">
                     <label>الدولة</label>
                     <select name="country_id" id="country_id" class="form-control">

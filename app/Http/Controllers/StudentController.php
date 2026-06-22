@@ -126,7 +126,27 @@ class StudentController extends Controller
     {
         if ($request->ajax()) {
             $name = $request->name;
-            $data = Students::where('name', 'LIKE', "%{$name}%")->paginate(1);
+            $active_search = $request->active_search;
+            if (empty($name)) {
+                // اعمل شرط دائما يرجع قيمة true
+                $filed1 = "id";
+                $operator1 = ">";
+                $value1 = 0;
+            } else {
+                $filed1 = "name";
+                $operator1 = "LIKE";
+                $value1 = "%{$name}%";
+            }
+            if ($active_search == "all") {
+                $filed2 = "id";
+                $operator2 = ">";
+                $value2 = 0;
+            } else {
+                $filed2 = "active";
+                $operator2 = "=";
+                $value2 = $active_search;
+            }
+            $data = Students::where($filed1, $operator1, $value1)->where($filed2, $operator2, $value2)->paginate(1);
             if (!empty($data)) {
                 foreach ($data as $info) {
                     // بهاي الطريقة ممكن نجيب اسم الدولة بدل ما نعرض رقم الدولة يعني بنقدر نستخدمها اذا بدي اجيب عمود واحد من الجدول واعطيه القيمة الي بدي ياها يلي هي اسم العمود
