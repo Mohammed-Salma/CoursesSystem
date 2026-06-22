@@ -13,13 +13,13 @@ class StudentController extends Controller
     use GeneralTraits;
     public function index()
     {
-        // هنا لما بدي استخدم دوال عليها طلب كثير وبستخدمها كثير عندي بالكود برضه بلجأ لطريقة التريت 
+        // هنا لما بدي استخدم دوال عليها طلب كثير وبستخدمها كثير عندي بالكود برضه بلجأ لطريقة التريت
         $this->mohamed();
 
         // بهاي الطريقة بقدر استدعي اي دالة انا بسويها وبقدر استخدمها باي مكان بالكود عندي
         // mohamed_soft();
         session()->put('locale', 'ar');
-        $data = Students::all();
+        $data = Students::paginate(2);
         if (!empty($data)) {
             foreach ($data as $info) {
                 // بهاي الطريقة ممكن نجيب اسم الدولة بدل ما نعرض رقم الدولة يعني بنقدر نستخدمها اذا بدي اجيب عمود واحد من الجدول واعطيه القيمة الي بدي ياها يلي هي اسم العمود
@@ -116,7 +116,7 @@ class StudentController extends Controller
     {
         if ($request->ajax()) {
             $name = $request->name;
-            $data = Students::where('name', 'LIKE', "%{$name}%")->get();
+            $data = Students::where('name', 'LIKE', "%{$name}%")->paginate(1);
             if (!empty($data)) {
                 foreach ($data as $info) {
                     // بهاي الطريقة ممكن نجيب اسم الدولة بدل ما نعرض رقم الدولة يعني بنقدر نستخدمها اذا بدي اجيب عمود واحد من الجدول واعطيه القيمة الي بدي ياها يلي هي اسم العمود
