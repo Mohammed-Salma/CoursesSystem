@@ -37,7 +37,13 @@ class CoursesController extends Controller
         event(new CourseAddEvent($request->name));
 
         //Send Email
-        Mail::to('mohsalma.mt@gmail.com')->send(new WelcomeMail());
+        $data = [
+            'name' => 'Mohamed',
+            'email' => 'mohsalma.mt@gmail.com',
+            'level' => 'advanced',
+            'courses' => ['laravel', 'php', 'mysql'],
+        ];
+        Mail::to('mohsalma.mt@gmail.com')->send(new WelcomeMail($data));
 
         return redirect()->route('courses.index')->with('success', 'تم إضافة الكورس بنجاح.');
 

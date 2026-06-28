@@ -17,9 +17,11 @@ class WelcomeMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+
+    public $data;
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -39,6 +41,10 @@ class WelcomeMail extends Mailable
     {
         return new Content(
             view: 'emails.welcome',
+
+            // مش شرط تعمل with هو هيك هيك شايف المتغير من فوق الا لو عند كذا متغير او بدك تغير اسمائهم عشان تميزهم
+            // with: ['data' => $this->data]
+
         );
     }
 
