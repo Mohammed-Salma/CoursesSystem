@@ -9,6 +9,8 @@ use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Headers;
+
 
 class WelcomeMail extends Mailable
 {
@@ -22,6 +24,19 @@ class WelcomeMail extends Mailable
     public function __construct($data)
     {
         $this->data = $data;
+    }
+
+
+    public function headers(): Headers
+    {
+        return new Headers(
+            messageId: 'mohamed-id@gmail.com',
+            references: ['mohamed-previous-message@gmail.com'],
+            text: [
+                'x-course' =>  'hi',
+            ]
+
+        );
     }
 
     /**
