@@ -49,6 +49,8 @@ class WelcomeMail extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        return [
+            Attachment::fromPath(public_path('user profile.pdf'))->as('user_profile.pdf')->withMime('application/pdf'),
+        ];
     }
 }
