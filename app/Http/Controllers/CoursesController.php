@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CourseAddEvent;
 use App\Http\Requests\CreateCourseValidationRequest;
-use Illuminate\Http\Request;
 use App\Models\Courses;
+use Illuminate\Http\Request;
 
 class CoursesController extends Controller
 {
@@ -30,6 +31,9 @@ class CoursesController extends Controller
         $course->name = $request->name;
         $course->active = $request->active;
         $course->save();
+        // نعمل اطلاق الجدث event
+        event(new CourseAddEvent($request->name));
+
         return redirect()->route('courses.index')->with('success', 'تم إضافة الكورس بنجاح.');
 
 
