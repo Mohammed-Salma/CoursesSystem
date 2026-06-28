@@ -6,6 +6,8 @@ use App\Events\CourseAddEvent;
 use App\Http\Requests\CreateCourseValidationRequest;
 use App\Models\Courses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeMail;
 
 class CoursesController extends Controller
 {
@@ -33,6 +35,9 @@ class CoursesController extends Controller
         $course->save();
         // نعمل اطلاق الجدث event
         event(new CourseAddEvent($request->name));
+
+        //Send Email
+        Mail::to('mohsalma.mt@gmail.com')->send(new WelcomeMail());
 
         return redirect()->route('courses.index')->with('success', 'تم إضافة الكورس بنجاح.');
 
