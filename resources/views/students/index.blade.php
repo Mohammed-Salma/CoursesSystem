@@ -11,6 +11,18 @@
                 <h3 class="card-title" style="text-align: center; float: none;">بيانات الطلاب
                     <a href="{{ route('ar') }}">ar</a>
                     <a href="{{ route('en') }}">en</a>
+
+                    {{-- Call Component and the first step is <x-component-name /> --}}
+                    {{-- <x-alert /> --}}
+
+                    <x-info-lable type="success" message="تم إضافة الطالب بنجاح." />
+                    <x-info-lable type="error" message="تم حذف الطالب بنجاح." />
+
+                    <x-info-lable-slot type="info">
+                        Call Component With Slot
+                    </x-info-lable-slot>
+
+
                     <a href="{{ route('student.create') }}" class="button"
                         style="background-color: #04AA6D; color: white; padding: 10px; float: left;">{{ __('mycustom.ADDNEW') }}</a>
                 </h3>
