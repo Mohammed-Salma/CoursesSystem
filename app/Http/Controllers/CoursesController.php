@@ -13,7 +13,7 @@ class CoursesController extends Controller
 {
     public function index()
     {
-        $data = Courses::all();
+        $data = Courses::paginate(6);
         return view('courses.index', compact('data')); //تمرير البيانات الى صفحة العرض + ممكن بدل كوباكت احط ['data' => $data]
     }
 
@@ -92,7 +92,7 @@ class CoursesController extends Controller
         return redirect()->route('courses.index')->with('success', 'تم تعديل الكورس بنجاح.');
     }
 
-        public function destroy($id)
+    public function destroy($id)
     {
         $dataCourse = Courses::find($id);
         if (empty($dataCourse)) {
@@ -101,5 +101,4 @@ class CoursesController extends Controller
         $dataCourse->delete();
         return redirect()->route('courses.index')->with('success', 'تم حذف الكورس بنجاح.');
     }
-
 }
