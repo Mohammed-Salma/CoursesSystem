@@ -23,3 +23,5 @@ Route::get('/student_from_api', function () {
 Route::get('courses', [CourseController::class, 'index']);
 Route::post('courses_store', [CourseController::class, 'store']);
 Route::get('courses_show/{id}', [CourseController::class, 'show']);
+Route::post('courses_update/{id}', [CourseController::class, 'update']);
+Route::get('courses_delete/{id}', [CourseController::class, 'destroy']);
