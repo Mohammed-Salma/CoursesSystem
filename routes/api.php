@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\StudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Students;
@@ -25,3 +26,9 @@ Route::post('courses_store', [CourseController::class, 'store']);
 Route::get('courses_show/{id}', [CourseController::class, 'show']);
 Route::post('courses_update/{id}', [CourseController::class, 'update']);
 Route::get('courses_delete/{id}', [CourseController::class, 'destroy']);
+
+
+// هنعمل api الاحترافي والتلقائي Route::apiResource()
+// students api
+
+Route::apiResource('students', StudentController::class);
