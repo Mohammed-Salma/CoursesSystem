@@ -43,37 +43,44 @@ class StudentController extends Controller
 
     public function store(CreateStudentRequest $request)
     {
-        // لما يكون مسجل مادة ما بينفع نضيف غيرها
-        $counter = Students::where('name', '=', $request->name)->count();
-        if ($counter > 0) {
-            return redirect()->back()->with(['error' => 'اسم الطالب موجود بالفعل'])->withInput();
+        try {
+            // كود ممكن يتنفذ
+
+            // لما يكون مسجل مادة ما بينفع نضيف غيرها
+            $counter = Students::where('name', '=', $request->name)->count();
+            if ($counter > 0) {
+                return redirect()->back()->with(['error' => 'اسم الطالب موجود بالفعل'])->withInput();
+            }
+            $student = new Students();
+            $student->name = $request->name;
+            $student->country_id = $request->country_id;
+            $student->phone = $request->phone;
+            $student->nationalID = $request->nationalID;
+            $student->address = $request->address;
+            $student->note = $request->note;
+            $student->active = $request->active;
+            // Upload the image if it exists
+            if ($request->hasFile('photo')) {
+                $image = $request->photo;
+                $extension = strtolower($image->extension());
+                $filename = time() . rand(1, 1000) . '.' . $extension;
+                // $image->getClientOriginalName = $filename;
+                $image->move(public_path('uploads'), $filename);
+                $student->image = $filename;
+            }
+            $student->save();
+
+            // ارسال اشعار لكل المستخدمسن في النظام
+            $users = User::select('id')->get();
+            $content = "تم اضافة طالب جديد باسم " . $request->name;
+            Notification::send($users, new CreateStudent($request->name, $content));
+
+
+            return redirect()->route('student.index')->with('success', 'تم إضافة الطالب بنجاح.');
+        } catch (\Exception $e) {
+            // كود هيتنفذ في حالة حدوث اي خطأ
+            return redirect()->back()->with(['error' => 'حدث خطأ' . $e->getMessage()])->withInput();
         }
-        $student = new Students();
-        $student->name = $request->name;
-        $student->country_id = $request->country_id;
-        $student->phone = $request->phone;
-        $student->nationalID = $request->nationalID;
-        $student->address = $request->address;
-        $student->note = $request->note;
-        $student->active = $request->active;
-        // Upload the image if it exists
-        if ($request->hasFile('photo')) {
-            $image = $request->photo;
-            $extension = strtolower($image->extension());
-            $filename = time() . rand(1, 1000) . '.' . $extension;
-            // $image->getClientOriginalName = $filename;
-            $image->move(public_path('uploads'), $filename);
-            $student->image = $filename;
-        }
-        $student->save();
-
-        // ارسال اشعار لكل المستخدمسن في النظام
-        $users = User::select('id')->get();
-        $content = "تم اضافة طالب جديد باسم " . $request->name;
-        Notification::send($users, new CreateStudent($request->name, $content));
-
-
-        return redirect()->route('student.index')->with('success', 'تم إضافة الطالب بنجاح.');
     }
 
     public function edit($id)

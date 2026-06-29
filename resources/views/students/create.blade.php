@@ -30,7 +30,8 @@
                         <option value="">اختر الدولة</option>
                         @if (!@empty($countries))
                             @foreach ($countries as $info)
-                                <option value="{{ $info->id }}">{{ $info->name }}</option>
+                                <option @if (old('country_id') == $info->id) selected @endif value="{{ $info->id }}">
+                                    {{ $info->name }}</option>
                             @endforeach
                         @endif
                     </select>
