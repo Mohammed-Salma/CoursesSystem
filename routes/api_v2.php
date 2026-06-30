@@ -1,0 +1,39 @@
+<?php
+
+use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\StudentController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Models\Students;
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
+
+//test
+Route::get('/student_from_api', function () {
+    return response()->json([
+        'Students' => Students::all()
+    ]);
+});
+
+
+// هنعرض كل المسارات في ملف واحد بس كل مسار هيكون تحته
+// API V2
+
+// هنعمل بشكل يدوي النوع اليدوي
+//api manual
+//courses api
+
+Route::prefix('v2')->group(function () {
+    Route::get('courses', [CourseController::class, 'index']);
+    Route::post('courses_store', [CourseController::class, 'store']);
+    Route::get('courses_show/{id}', [CourseController::class, 'show']);
+    Route::post('courses_update/{id}', [CourseController::class, 'update']);
+    Route::get('courses_delete/{id}', [CourseController::class, 'destroy']);
+
+    // هنعمل api الاحترافي والتلقائي Route::apiResource()
+    // students api
+
+    Route::apiResource('students', StudentController::class);
+});
