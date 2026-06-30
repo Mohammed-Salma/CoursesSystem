@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateCourseValidationRequest;
 use App\Http\Resources\CourseResource;
@@ -13,33 +14,56 @@ class CourseController extends Controller
     public function index()
     {
         $data = Courses::paginate(6);
-        return response()->json([
-            'status' => true,
-            'message' => 'تم استرجاع الكورسات بنجاح',
-            'data' => CourseResource::collection($data), // لما اكون عامل باجينيت لازم احط collection
 
-        ], 200);
+        // First Example
+        // return response()->json([
+        //     'status' => true,
+        //     'message' => 'تم استرجاع الكورسات بنجاح',
+        //     'data' => $data,
+        // ], 200);
+
+        // Second Example
+        // return response()->json([
+        //     'status' => true,
+        //     'message' => 'تم استرجاع الكورسات بنجاح',
+        //     'data' => CourseResource::collection($data), // لما اكون عامل باجينيت لازم احط collection
+        // ], 200);
+
+        // third example
+        //هنا لو هنشتغل على توحيد الapi يلي هيرجعلي
+        // api schema
+        return ApiResponse::send(200, true, 'تم استرجاع الكورسات بنجاح', CourseResource::collection($data));
     }
     public function store(CreateCourseValidationRequest $request)
     {
         // لما يكون مسجل مادة ما بينفع نضيف غيرها
         $counter = Courses::where('name', '=', $request->name)->count();
         if ($counter > 0) {
-            return response()->json([
-                'status' => false,
-                'message' => 'اسم الكورس موجود بالفعل',
-            ], 422);
+            // return response()->json([
+            //     'status' => false,
+            //     'message' => 'اسم الكورس موجود بالفعل',
+            // ], 422);
+
+            //هنا لو هنشتغل على توحيد الapi يلي هيرجعلي
+            // api schema
+            return ApiResponse::send(422, false, 'اسم الكورس موجود بالفعل', '' , 'هناك خطا بسبب انه يوجد كورس بهذا الاسم');
         }
         $course = new Courses();
         $course->name = $request->name;
         $course->active = $request->active;
         $course->save();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'تم اضافه الكورس بنجاح',
-            'data' => $course
-        ], 201);
+        // first example
+        // return response()->json([
+        //     'status' => true,
+        //     'message' => 'تم اضافه الكورس بنجاح',
+        //     'data' => $course
+        // ], 201);
+
+        // second example
+        //هنا لو هنشتغل على توحيد الapi يلي هيرجعلي
+        // api schema
+        return ApiResponse::send(201, true, 'تم اضافه الكورس بنجاح', $course);
     }
 
     public function show($id)
