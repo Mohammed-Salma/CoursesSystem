@@ -40,4 +40,12 @@ class AuthApiController extends Controller
             return ApiResponse::send(401, false, 'البريد الالكتروني او كلمة المرور غير صحيحة');
         }
     }
+
+    public function logout(Request $request)
+    {
+        // حذف التوكن نهائيا من جدول التوكن
+        $request->user()->currentAccessToken()->delete();
+        return ApiResponse::send(200, true, 'تم تسجيل الخروج بنجاح');
+    }
+
 }

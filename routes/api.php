@@ -36,4 +36,5 @@ Route::apiResource('students', StudentController::class);
 
 Route::post('register', [AuthApiController::class, 'register']);
 Route::post('login', [AuthApiController::class, 'login']);
+Route::post('logout', [AuthApiController::class, 'logout'])->middleware('auth:sanctum');
 
