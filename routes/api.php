@@ -35,4 +35,5 @@ Route::get('courses_delete/{id}', [CourseController::class, 'destroy']);
 Route::apiResource('students', StudentController::class);
 
 Route::post('register', [AuthApiController::class, 'register']);
+Route::post('login', [AuthApiController::class, 'login']);
 

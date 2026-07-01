@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthApiController extends Controller
@@ -20,13 +22,22 @@ class AuthApiController extends Controller
                 'password' => Hash::make($request->password),
             ]
         );
-
         $data['token'] = $user->createToken('ApiRegisterToken')->plainTextToken;
-        $data['name'] = $request->name;
-        $data['email'] = $request->email;
-
+        $data['name'] = $user->name;
+        $data['email'] = $user->email;
         return ApiResponse::send(201, true, 'تم انشاء الحساب بنجاح وتم تسجيل الدخول', $data);
+    }
 
-
+    public function login(LoginRequest $request)
+    {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $user = Auth::user();
+            $data['token'] = $user->createToken('ApiLoginToken')->plainTextToken;
+            $data['name'] = $user->name;
+            $data['email'] = $user->email;
+            return ApiResponse::send(200, true, 'تم تسجيل الدخول بنجاح', $data);
+        } else {
+            return ApiResponse::send(401, false, 'البريد الالكتروني او كلمة المرور غير صحيحة');
+        }
     }
 }
