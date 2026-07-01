@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\AuthApiController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\StudentController;
+use App\Models\Students;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\Students;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -32,3 +33,6 @@ Route::get('courses_delete/{id}', [CourseController::class, 'destroy']);
 // students api
 
 Route::apiResource('students', StudentController::class);
+
+Route::post('register', [AuthApiController::class, 'register']);
+
